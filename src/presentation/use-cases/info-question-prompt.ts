@@ -1,9 +1,8 @@
 import { EXIT } from '../../const'
-import { Choice, PromptOptions } from '../../types'
-import { IPrompt } from "../interfaces/IPrompt"
+import { Choice, PromptOption } from '../../types'
 import { BasePrompt } from './base-prompts/base-prompt'
 
-export class InfoQuestionPrompt extends BasePrompt implements IPrompt  {
+export class InfoQuestionPrompt extends BasePrompt {
   
   readonly type = 'select'
   
@@ -20,7 +19,7 @@ export class InfoQuestionPrompt extends BasePrompt implements IPrompt  {
     this.options = this.configOptions()
   }
 
-  configOptions(): PromptOptions {
+  configOptions(): PromptOption {
     return {
       type: this.type,
       name: this.name,

@@ -1,60 +1,105 @@
-import { EXIT } from "./const"
-import { GetNewConditionalPrompt } from "./presentation/use-cases/get-new-conditional-prompt"
-import { GetNewValuePrompt } from "./presentation/use-cases/get-new-value-prompt"
+import { EXIT, INITIAL_STEP } from "./const"
+import { BinaryTree } from "./domain/binary-tree"
+import { TreeNode } from "./domain/tree-node"
+import { GetNewFoodPrompt } from "./presentation/use-cases/get-new-food-prompt"
 import { InfoQuestionPrompt } from "./presentation/use-cases/info-question-prompt"
 import { InitialPrompt } from "./presentation/use-cases/initial-prompt"
-import { TreeNode } from "./tree-node"
+
+const makeInitialTree = () => {
+  const binaryTree = new BinaryTree()
+
+  const initialNode = new TreeNode(INITIAL_STEP)
+  binaryTree.setRoot(initialNode)
+
+  const nodeMassa = new TreeNode('massa')
+  nodeMassa.setParent(initialNode)
+  initialNode.setLeft(nodeMassa)
+
+  const nodeLasanha = new TreeNode('lasanha')
+  nodeLasanha.setParent(nodeMassa)
+  nodeMassa.setLeft(nodeLasanha)
+
+  const nodeBolo = new TreeNode('bolo de chocolate')
+  nodeBolo.setParent(nodeMassa)
+  nodeMassa.setRight(nodeBolo)
+
+  return binaryTree
+}
 
 const bootstrap = async () => {
-  let shutDown = false
+  const restartGame = false
+  let shutdownGame = false
 
-  const userIsReady = await new InitialPrompt().runPrompt()
-
-  if(!userIsReady) shutDown = true
-
-  let treeNode = new TreeNode(
-    "massa", 
-    new TreeNode(
-      "Lasagna?",
-      new TreeNode("Lasanha Bolonhesa?"),
-      new TreeNode("Lasanha de Frango?")
-    ), 
-    new TreeNode(
-      "Bolo de Chocolate?", 
-      new TreeNode("Bolo de Chocolate com Morango?"),
-      new TreeNode("Bolo de Chocolate com Caramelo?")
-  ))
-
-  while(!shutDown && userIsReady) {
-    console.log('treeNode?.getValue()', treeNode?.getValue())
-
-    const response = await new InfoQuestionPrompt(treeNode.getValue()).runPrompt()
-
-    if(typeof(response) === 'string' && response === EXIT) shutDown = true
+  const decisionTree = makeInitialTree()
+  
+  while(!shutdownGame) {
     
-    if(response) {
-      if(treeNode.isLeaf()) {
-        console.log("Acertei de novo!")
-        shutDown = true
-      } else {
-        // Eslint error! If isLeaf() is false ate least one of the nodes must exist!
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    let currentNode = decisionTree.getRoot()!
+    
+    while(!restartGame) {
+      
+      if(currentNode.getValue() === INITIAL_STEP) {
+        const resp = await new InitialPrompt().runPrompt()
+        if(!resp) {
+          shutdownGame = true
+          break
+        }
+        
+        // Eslint error! In my logical isLeaf() is false ate least left node must exist!
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        treeNode = treeNode.getLeft()!
+        currentNode = currentNode.getLeft()!
       }
-    } else {
-      if(treeNode.hasRight()) {
-        // Eslint error! If isLeaf() is false ate least one of the nodes must exist!
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        treeNode = treeNode.getRight()!
+  
+      const response = await new InfoQuestionPrompt(currentNode.getValue()).runPrompt()
+  
+      if(typeof(response) === 'string' && response === EXIT) {
+        shutdownGame = true
+        break
+      }
+      
+      if(response) {
+        if(currentNode.isLeaf()) {
+          console.log("Acertei de novo!")
+          currentNode = decisionTree.returnToRoot(currentNode)
+        } else {
+          // Eslint error! If isLeaf() is false ate least left node must exist!
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          currentNode = currentNode.getLeft()!
+        }
       } else {
-        const newFood = await new GetNewValuePrompt().runPrompt().toString()
-        const newNodeValue = await new GetNewConditionalPrompt(newFood, treeNode.getValue()).runPrompt().toString()
+        if(currentNode.hasRight()) {
+          // Eslint error! If hasRight() is true we have right node!
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          currentNode = currentNode.getRight()!
+        } else {
+  
+          const resp: any = await new GetNewFoodPrompt(currentNode.getValue()).runPrompt()
+          const parentNode = currentNode.getParent()!
+          
+          
+          const newNodeValue = new TreeNode(resp.newNodeValue)
+          const newFood = new TreeNode(resp.newFood)
+          newFood.setParent(newNodeValue)
+          newNodeValue.setParent(parentNode)
+          newNodeValue.setLeft(newFood)
+          newNodeValue.setRight(currentNode)
+          
+          if (currentNode.isRight()) {
+            parentNode.setRight(newNodeValue)
+          }
 
-        treeNode.addNode(new TreeNode(newNodeValue, new TreeNode(newFood)))
-
+          if(currentNode.isLeft()) {
+            parentNode.setLeft(newNodeValue)
+          }
+          
+          currentNode.setParent(newNodeValue)
+          
+          currentNode = decisionTree.returnToRoot(currentNode)
+        }
       }
+  
     }
-
   }
 }
 

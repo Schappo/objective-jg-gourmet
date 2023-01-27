@@ -1,4 +1,4 @@
-import { PromptOptions, PromptOptionsValidate, PromptType } from '../../../types'
+import { PromptOption, PromptOptionValidate, PromptType } from '../../../types'
 import { IPrompt } from '../../interfaces/IPrompt'
 import { BasePrompt } from './base-prompt'
 
@@ -8,13 +8,13 @@ export class TextPrompt extends BasePrompt implements IPrompt  {
 
   constructor(
     private readonly message: string,
-    private readonly validate: PromptOptionsValidate,
+    private readonly validate: PromptOptionValidate,
   ) {
     super()
     this.options = this.configOptions()
   }
 
-  configOptions(): PromptOptions {
+  configOptions(): PromptOption {
     return {
       type: this.type,
       name: this.name,

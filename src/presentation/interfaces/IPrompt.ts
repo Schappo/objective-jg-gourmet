@@ -10,5 +10,5 @@ export interface IPrompt {
   readonly type: PromptType
 
   configOptions(): PromptOptions
-  runPrompt(): Promise<string | boolean>
+  runPrompt(): Promise<string | Record<string, string> | boolean>
 }

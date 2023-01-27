@@ -1,5 +1,5 @@
 
-import { PromptOptions, PromptType } from '../../../types'
+import { PromptOption, PromptType } from '../../../types'
 import { IPrompt } from '../../interfaces/IPrompt'
 import { BasePrompt } from './base-prompt'
 
@@ -14,7 +14,7 @@ export class TogglePrompt extends BasePrompt implements IPrompt  {
     this.options = this.configOptions()
   }
 
-  configOptions(): PromptOptions {
+  configOptions(): PromptOption {
     return {
       type: this.type,
       name: this.name,

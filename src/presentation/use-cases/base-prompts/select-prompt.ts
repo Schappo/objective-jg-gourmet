@@ -1,4 +1,4 @@
-import { Choice, PromptOptions, PromptType } from '../../../types'
+import { Choice, PromptOption, PromptType } from '../../../types'
 import { IPrompt } from '../../interfaces/IPrompt'
 
 import { BasePrompt } from './base-prompt'
@@ -15,7 +15,7 @@ export class SelectPrompt extends BasePrompt implements IPrompt  {
     this.options = this.configOptions()
   }
 
-  configOptions(): PromptOptions {
+  configOptions(): PromptOption {
     return {
       type: this.type,
       name: this.name,
