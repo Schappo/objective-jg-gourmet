@@ -8,9 +8,9 @@
     "email": "felipeschappoo@gmail.com"
   },
   "scripts": {
-    "dev": "tsx src/index.ts",
+    "dev": "node build/index.js",
     "prepare": "husky install",
-    "build": "npx tsc -p .",
+    "build": "npx tsc",
     "test": "echo \"Error: no test specified\""
   },
   "dependencies": {

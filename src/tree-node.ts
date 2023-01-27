@@ -17,18 +17,6 @@ export class TreeNode {
     return this.right
   }
 
-  setLeft(node: TreeNode) {
-    this.left = node
-  }
-
-  setRight(node: TreeNode) {
-    this.right = node
-  }
-
-  setValue(value: string) {
-    this.value = value
-  }
-
   isLeaf() {
     return !this.left && !this.right
   }
@@ -42,6 +30,7 @@ export class TreeNode {
   }
 
   addNode(node: TreeNode) {
+    let newNode: TreeNode
     if(this.isLeaf()) {
       this.left = node
     } else {
