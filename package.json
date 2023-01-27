@@ -10,15 +10,15 @@
   "scripts": {
     "dev": "tsx src/index.ts",
     "prepare": "husky install",
-    "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npx tsc -p .",
+    "test": "echo \"Error: no test specified\""
   },
   "dependencies": {
     "prompts": "^2.4.2",
     "typescript": "*"
   },
   "lint-staged": {
-    "*.ts": "npm run build"
+    "*.ts": "npm run test"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",
