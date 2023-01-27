@@ -8,18 +8,21 @@
     "email": "felipeschappoo@gmail.com"
   },
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx src/index.ts",
     "prepare": "husky install",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "prompts": "^2.4.2",
     "typescript": "*"
   },
   "lint-staged": {
-    "*.ts": "npm test"
+    "*.ts": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",
+    "@types/prompts": "^2.4.2",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
     "eslint": "^8.32.0",
