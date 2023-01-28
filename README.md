@@ -27,6 +27,13 @@ yarn install
 
 ## Run Game
 
+Frist you must build project
+
+```sh
+npm run build
+```
+After run projct
+
 ```sh
 npm run dev
 ```
@@ -35,6 +42,7 @@ npm run dev
 ## considerations
 <br/>
 
-to implement the game I structured a binary tree for decision making. each tree node has a value that increments the questions, if the answer is yes the decision goes to the left node. If the answer is no, the decision moves to the right node.
+To implement the game I structured a binary tree for decision making. Each tree node has a value that increments the questions, if the answer for the current question is yes the decision goes to the left node. If the answer is no, the decision moves to the right node.
 
 When the answer is no in a leaf node (node without branches), two new nodes are created. A node for decision making and another for the new food to be registered. After that the game restarts.
+
