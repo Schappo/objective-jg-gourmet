@@ -1,5 +1,5 @@
-import { PromptOption, PromptOptionValidate, PromptType } from '../../../types'
-import { IPrompt } from '../../interfaces/IPrompt'
+import { PromptOption, PromptOptionValidate, PromptType } from '../../types'
+import { IPrompt } from '../interfaces/IPrompt'
 import { BasePrompt } from './base-prompt'
 
 export class TextPrompt extends BasePrompt implements IPrompt  {

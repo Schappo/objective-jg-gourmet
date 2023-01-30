@@ -1,5 +1,5 @@
-import { EXIT } from '../../const'
-import { Choice, PromptOption } from '../../types'
+import { EXIT } from '../const'
+import { Choice, PromptOption } from '../types'
 import { BasePrompt } from './base-prompts/base-prompt'
 
 export class InfoQuestionPrompt extends BasePrompt {

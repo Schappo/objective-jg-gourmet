@@ -1,5 +1,5 @@
 import prompts from 'prompts'
-import { PromptOptions, PromptType } from "../../types"
+import { PromptOptions, PromptType } from "../types"
 import { BasePrompt } from "./base-prompts/base-prompt"
 
 export class GetNewFoodPrompt extends BasePrompt {

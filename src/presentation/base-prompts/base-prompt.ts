@@ -1,6 +1,6 @@
 import prompts from "prompts"
-import { PromptOptions, PromptType } from "../../../types"
-import { IPrompt } from "../../interfaces/IPrompt"
+import { PromptOptions, PromptType } from "../../types"
+import { IPrompt } from "../interfaces/IPrompt"
 
 export abstract class BasePrompt implements IPrompt {
   readonly name = 'value'

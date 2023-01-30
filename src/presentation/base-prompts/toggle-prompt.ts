@@ -1,6 +1,6 @@
 
-import { PromptOption, PromptType } from '../../../types'
-import { IPrompt } from '../../interfaces/IPrompt'
+import { PromptOption, PromptType } from '../../types'
+import { IPrompt } from '../interfaces/IPrompt'
 import { BasePrompt } from './base-prompt'
 
 export class TogglePrompt extends BasePrompt implements IPrompt  {

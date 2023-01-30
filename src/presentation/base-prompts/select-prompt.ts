@@ -1,5 +1,5 @@
-import { Choice, PromptOption, PromptType } from '../../../types'
-import { IPrompt } from '../../interfaces/IPrompt'
+import { Choice, PromptOption, PromptType } from '../../types'
+import { IPrompt } from '../interfaces/IPrompt'
 
 import { BasePrompt } from './base-prompt'
 
