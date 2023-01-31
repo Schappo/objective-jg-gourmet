@@ -94,8 +94,6 @@ export class Game {
   private handleNewCategoryAndFoodNodes({newCategory, newFood}: NewFoodCategoryPropsType): void {
     const newCategoryNode = this.decisionTree.getCurrentNode().createNode(newCategory)
     const newFoodNode = this.decisionTree.getCurrentNode().createNode(newFood)
-    console.log('newCategoryNode', newCategoryNode)
-    console.log('newFoodNode', newFoodNode)
     newCategoryNode.setLeft(newFoodNode)
     newCategoryNode.setRight(this.decisionTree.getCurrentNode())
     
@@ -104,14 +102,11 @@ export class Game {
     newFoodNode.setParent(newCategoryNode)
     
     if (this.decisionTree.getCurrentNode().isRight()) {
-      console.log("isRight")
       // Null assertion is safe because we are not in the root node
       this.decisionTree.getCurrentNode().getParent()!.setRight(newCategoryNode)
-      console.log(newCategoryNode)
     }
     
     if(this.decisionTree.getCurrentNode().isLeft()) {
-      console.log("isLeft")
       // Null assertion is safe because we are not in the root node
       this.decisionTree.getCurrentNode().getParent()!.setLeft(newCategoryNode)
     }
