@@ -1,18 +1,18 @@
 import { Choice, PromptOption, PromptType } from '../../types'
-import { IPrompt } from '../interfaces/IPrompt'
+import { PromptsInterface } from '../interfaces/IPrompt'
 
 import { BasePrompt } from './base-prompt'
 
-export class SelectPrompt extends BasePrompt implements IPrompt  {
+export class SelectPrompt extends BasePrompt {
   
   readonly type: PromptType = 'select'
   
   constructor(
     private readonly message: string,
-    private readonly choices: Choice[]
+    private readonly choices: Choice[],
+    prompt: PromptsInterface
   ) {
-    super()
-    this.options = this.configOptions()
+    super(prompt)
   }
 
   configOptions(): PromptOption {

@@ -1,26 +1,23 @@
 import { TreeNode } from "./tree-node"
 
 export class BinaryTree {
-  private root: TreeNode | null
+  private root: TreeNode
+  private currentNode: TreeNode
 
-  constructor() {
-    this.root = null 
+  constructor(treeNode: TreeNode) {
+    this.root = treeNode 
+    this.currentNode = this.root
   }
 
-  setRoot(node: TreeNode) {
-    this.root = node
-  }
-
-  getRoot(): TreeNode | null {
+  getRoot(): TreeNode {
     return this.root
   }
 
-  returnToRoot(node: TreeNode) {
-    let current = node
-    while (current.parent !== null) {
-        current = current.parent
-    }
-    return current
+  getCurrentNode(): TreeNode {
+    return this.currentNode
   }
 
+  setCurrentNode(node: TreeNode): void {
+    this.currentNode = node
+  }
 }

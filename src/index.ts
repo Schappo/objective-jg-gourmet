@@ -1,106 +1,51 @@
-import { EXIT, INITIAL_STEP } from "./const"
+import prompt from "prompts"
+import { INITIAL_STEP } from "./const"
 import { BinaryTree } from "./domain/binary-tree"
+import { Game } from "./domain/game"
 import { TreeNode } from "./domain/tree-node"
-import { GetNewFoodPrompt } from "./presentation/use-cases/get-new-food-prompt"
-import { InfoQuestionPrompt } from "./presentation/use-cases/info-question-prompt"
-import { InitialPrompt } from "./presentation/use-cases/initial-prompt"
+import { DefeatInformationPrompt } from "./presentation/defeat-information-prompt"
+import { InfoQuestionPrompt } from "./presentation/info-question-prompt"
+import { InitialPrompt } from "./presentation/initial-prompt"
+import { NewFoodCategoryPrompt } from "./presentation/new-food-prompt"
 
-const makeInitialTree = () => {
-  const binaryTree = new BinaryTree()
-
+const makeInitialTree = (): BinaryTree => {
+  // Create initial nodes tree
   const initialNode = new TreeNode(INITIAL_STEP)
-  binaryTree.setRoot(initialNode)
-
   const nodeMassa = new TreeNode('massa')
-  nodeMassa.setParent(initialNode)
-  initialNode.setLeft(nodeMassa)
-
-  const nodeLasanha = new TreeNode('lasanha')
-  nodeLasanha.setParent(nodeMassa)
-  nodeMassa.setLeft(nodeLasanha)
-
+  const nodeLasagna = new TreeNode('lasagna')
   const nodeBolo = new TreeNode('bolo de chocolate')
-  nodeBolo.setParent(nodeMassa)
+  
+  // Set left node for initialNode
+  initialNode.setLeft(nodeMassa)
+  
+  // Create binary tree passing initialNode as root
+  const binaryTree = new BinaryTree(initialNode)
+
+  // Set parent and branch nodes for each nodeMassa
+  nodeMassa.setParent(initialNode)
+  nodeMassa.setLeft(nodeLasagna)
   nodeMassa.setRight(nodeBolo)
+  
+  // Set parent for each nodeLasagna and nodeBolo, both are leaf nodes
+  nodeLasagna.setParent(nodeMassa)
+  nodeBolo.setParent(nodeMassa)
 
   return binaryTree
 }
 
-const bootstrap = async () => {
-  const restartGame = false
-  let shutdownGame = false
+const initialPrompt = new InitialPrompt(prompt)
+const infoQuestionPrompt = new InfoQuestionPrompt(prompt)
+const newFoodCategoryPrompt = new NewFoodCategoryPrompt(prompt)
+const defeatInformationPrompt = new DefeatInformationPrompt(prompt)
+const decisionTree = makeInitialTree()
 
-  const decisionTree = makeInitialTree()
-  
-  while(!shutdownGame) {
-    
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    let currentNode = decisionTree.getRoot()!
-    
-    while(!restartGame) {
-      
-      if(currentNode.getValue() === INITIAL_STEP) {
-        const resp = await new InitialPrompt().runPrompt()
-        if(!resp) {
-          shutdownGame = true
-          break
-        }
-        
-        // Eslint error! In my logical isLeaf() is false ate least left node must exist!
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        currentNode = currentNode.getLeft()!
-      }
-  
-      const response = await new InfoQuestionPrompt(currentNode.getValue()).runPrompt()
-  
-      if(typeof(response) === 'string' && response === EXIT) {
-        shutdownGame = true
-        break
-      }
-      
-      if(response) {
-        if(currentNode.isLeaf()) {
-          console.log("Acertei de novo!")
-          currentNode = decisionTree.returnToRoot(currentNode)
-        } else {
-          // Eslint error! If isLeaf() is false ate least left node must exist!
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          currentNode = currentNode.getLeft()!
-        }
-      } else {
-        if(currentNode.hasRight()) {
-          // Eslint error! If hasRight() is true we have right node!
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          currentNode = currentNode.getRight()!
-        } else {
-  
-          const resp: any = await new GetNewFoodPrompt(currentNode.getValue()).runPrompt()
-          const parentNode = currentNode.getParent()!
-          
-          
-          const newNodeValue = new TreeNode(resp.newNodeValue)
-          const newFood = new TreeNode(resp.newFood)
-          newFood.setParent(newNodeValue)
-          newNodeValue.setParent(parentNode)
-          newNodeValue.setLeft(newFood)
-          newNodeValue.setRight(currentNode)
-          
-          if (currentNode.isRight()) {
-            parentNode.setRight(newNodeValue)
-          }
-
-          if(currentNode.isLeft()) {
-            parentNode.setLeft(newNodeValue)
-          }
-          
-          currentNode.setParent(newNodeValue)
-          
-          currentNode = decisionTree.returnToRoot(currentNode)
-        }
-      }
-  
-    }
+const gourmetGame = new Game(decisionTree,
+  {
+    initialPrompt,
+    infoQuestionPrompt,
+    newFoodCategoryPrompt,
+    defeatInformationPrompt,
   }
-}
+)
 
-bootstrap()
+gourmetGame.start()

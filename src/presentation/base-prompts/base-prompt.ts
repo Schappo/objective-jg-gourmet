@@ -1,16 +1,20 @@
-import prompts from "prompts"
-import { PromptOptions, PromptType } from "../../types"
-import { IPrompt } from "../interfaces/IPrompt"
+import { TreeNode } from "../../domain/tree-node"
+import { PromptOptions, PromptResponse, PromptType } from "../../types"
+import { IPrompt, PromptsInterface } from "../interfaces/IPrompt"
 
 export abstract class BasePrompt implements IPrompt {
   readonly name = 'value'
   type: PromptType = 'text'
-  options: PromptOptions = this.configOptions()
+  private prompt: PromptsInterface
   
-  async runPrompt(): Promise<string | Record<string, string> | boolean> {
-    const { value } = await prompts(this.options)
-    return value
+  constructor(prompt: PromptsInterface) {
+    this.prompt = prompt
   }
 
-  abstract configOptions(): PromptOptions
+  async runPrompt(treeNodeValue?: TreeNode): Promise<PromptResponse> {
+    const options = this.configOptions(treeNodeValue)
+    return await this.prompt(options)
+  }
+
+  abstract configOptions(treeNodeValue?: TreeNode): PromptOptions
 }

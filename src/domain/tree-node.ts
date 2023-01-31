@@ -1,21 +1,23 @@
-export class TreeNode {
-  value: string
-  left: TreeNode | null
-  right: TreeNode | null
-  parent: TreeNode | null
+import { ConfigTreeNode } from "../types"
 
-  constructor(value: string) {
+export class TreeNode {
+  private value: string
+  private left: TreeNode | undefined
+  private right: TreeNode | undefined
+  private parent: TreeNode | undefined
+
+  constructor(value: string, configTreeNode?: ConfigTreeNode) {
       this.value = value
-      this.left = null
-      this.right = null
-      this.parent = null
+      this.left = configTreeNode?.left
+      this.right = configTreeNode?.right
+      this.parent = configTreeNode?.parent
   }
 
   getValue(): string {
     return this.value
   }
 
-  getLeft(): TreeNode | null {
+  getLeft(): TreeNode | undefined {
     return this.left
   }
 
@@ -27,12 +29,16 @@ export class TreeNode {
     this.right = node
   }
 
-  getRight(): TreeNode | null {
+  getRight(): TreeNode | undefined {
     return this.right
   }
 
-  getParent(): TreeNode | null {
+  getParent(): TreeNode | undefined {
     return this.parent
+  }
+
+  isRoot(): boolean {
+    return !this.parent
   }
 
   setParent(node: TreeNode): void {
@@ -57,6 +63,11 @@ export class TreeNode {
 
   hasRight(): boolean {
     return !!this.right
+  }
+
+  createNode(value: string): TreeNode {
+    const node = new TreeNode(value)
+    return node
   }
     
 }

@@ -1,14 +1,14 @@
-import { PromptOptions, PromptType } from "../../types"
-
-export interface IPrompt2 {
-  initialQuestion(): Promise<string>
-  makeQuestion(nodeValue: string): Promise<string>
-}
+import { TreeNode } from "../../domain/tree-node"
+import { PromptOptions, PromptResponse, PromptType } from "../../types"
 
 export interface IPrompt {
   readonly name: string
   readonly type: PromptType
 
-  configOptions(): PromptOptions
-  runPrompt(): Promise<string | Record<string, string> | boolean>
+  configOptions(treeNode?: TreeNode): PromptOptions
+  runPrompt(treeNode?: TreeNode): Promise<PromptResponse>
+}
+
+export interface PromptsInterface {
+  (options: PromptOptions): Promise<Record<string, string>>
 }

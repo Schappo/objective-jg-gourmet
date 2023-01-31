@@ -1,6 +1,8 @@
 import { EXIT } from '../const'
+import { TreeNode } from '../domain/tree-node'
 import { Choice, PromptOption } from '../types'
 import { BasePrompt } from './base-prompts/base-prompt'
+import { PromptsInterface } from './interfaces/IPrompt'
 
 export class InfoQuestionPrompt extends BasePrompt {
   
@@ -13,17 +15,16 @@ export class InfoQuestionPrompt extends BasePrompt {
   ]
   
   constructor(
-    private readonly treeNodeValue: string,
+    prompt: PromptsInterface
   ) {
-    super()
-    this.options = this.configOptions()
+    super(prompt)
   }
 
-  configOptions(): PromptOption {
+  configOptions(treeNode: TreeNode): PromptOption {
     return {
       type: this.type,
       name: this.name,
-      message: `O prato que você pensou é ${this.treeNodeValue}?`,
+      message: `O prato que você pensou é ${treeNode.getValue()}?`,
       choices: this.choices
     }
   }
