@@ -7,8 +7,9 @@ import { DefeatInformationPrompt } from "./presentation/defeat-information-promp
 import { InfoQuestionPrompt } from "./presentation/info-question-prompt"
 import { InitialPrompt } from "./presentation/initial-prompt"
 import { NewFoodCategoryPrompt } from "./presentation/new-food-prompt"
+import { PromptsPropsGameType } from "./types"
 
-const makeInitialTree = (): BinaryTree => {
+const makeInitialNode = (): TreeNode => {
   // Create initial nodes tree
   const initialNode = new TreeNode(INITIAL_STEP)
   const nodeMassa = new TreeNode('massa')
@@ -17,9 +18,6 @@ const makeInitialTree = (): BinaryTree => {
   
   // Set left node for initialNode
   initialNode.setLeft(nodeMassa)
-  
-  // Create binary tree passing initialNode as root
-  const binaryTree = new BinaryTree(initialNode)
 
   // Set parent and branch nodes for each nodeMassa
   nodeMassa.setParent(initialNode)
@@ -30,22 +28,23 @@ const makeInitialTree = (): BinaryTree => {
   nodeLasagna.setParent(nodeMassa)
   nodeBolo.setParent(nodeMassa)
 
-  return binaryTree
+  return initialNode
 }
 
 const initialPrompt = new InitialPrompt(prompt)
 const infoQuestionPrompt = new InfoQuestionPrompt(prompt)
 const newFoodCategoryPrompt = new NewFoodCategoryPrompt(prompt)
 const defeatInformationPrompt = new DefeatInformationPrompt(prompt)
-const decisionTree = makeInitialTree()
+const initialNode = makeInitialNode()
+const decisionTree = new BinaryTree(initialNode)
 
-const gourmetGame = new Game(decisionTree,
-  {
-    initialPrompt,
-    infoQuestionPrompt,
-    newFoodCategoryPrompt,
-    defeatInformationPrompt,
-  }
-)
+const promptPropsGame: PromptsPropsGameType = {
+  initialPrompt,
+  infoQuestionPrompt,
+  newFoodCategoryPrompt,
+  defeatInformationPrompt,
+} 
+
+const gourmetGame = new Game(decisionTree, promptPropsGame)
 
 gourmetGame.start()
